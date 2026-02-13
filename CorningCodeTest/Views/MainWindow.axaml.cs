@@ -26,7 +26,7 @@ public partial class MainWindow : Window
         var hist = Histogram.WithBinSize(1, 0, 255);
         _bars = AvaPlot1.Plot.Add.Bars(hist.Bins, hist.Counts);
         _bars.Color = new Color(200, 200, 200);
-        _bars.Horizontal = true;
+
 
         foreach (var bar in _bars.Bars)
         {
@@ -41,18 +41,20 @@ public partial class MainWindow : Window
 
     private void SetupPlot()
     {
-        AvaPlot1.Plot.FigureBackground.Color = new Color(25, 25, 50);
+        AvaPlot1.Plot.FigureBackground.Color = new Color(15, 15, 35);
         AvaPlot1.Plot.Grid.MajorLineColor = new Color(50, 50, 50);
+
         AvaPlot1.Plot.Axes.Color(new Color(200, 200, 200));
         AvaPlot1.Plot.Axes.SetLimitsY(0, 255);
-        AvaPlot1.Plot.XLabel("Count");
-        AvaPlot1.Plot.YLabel("Gray Value");
+
+        AvaPlot1.Plot.XLabel("Gray Value");
+        AvaPlot1.Plot.YLabel("Count");
     }
 
     private void UpdatePlot(int[] counts)
     {
         for (var i = 0; i < _bars?.Bars.Count; i++) _bars.Bars[i].Value = counts[i];
-        AvaPlot1.Plot.Axes.AutoScaleX();
+        AvaPlot1.Plot.Axes.AutoScaleY();
         AvaPlot1.Refresh();
     }
 

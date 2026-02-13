@@ -3,16 +3,17 @@
         xmlns:sp="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
         xmlns:vm="clr-namespace:CorningCodeTest.ViewModels"
         x:Class="CorningCodeTest.Views.MainWindow"
-        Title="CorningCodeTest" Width="960" Height="640"
+        Title="CorningCodeTest" Width="1080" Height="750"
+        MinWidth="1080"
+        MinHeight="750"
+        CanResize="True"
         x:DataType="vm:MainViewModel">
-
-    <Grid Background="rgb(50,50,50)">
-        <Grid Margin="10 5" ColumnDefinitions="Auto,*,Auto" Background="rgb(15,15,35)">
-
-            <StackPanel Grid.Column="0" Width="150"
-                        Height="300"
+    <Grid Background="rgb(15,15,35)" RowDefinitions="*, Auto" ColumnDefinitions="*">
+        <Grid Margin="20" Row="0" ColumnDefinitions="Auto, *">
+            <StackPanel Grid.Column="0"
+                        Width="200"
                         VerticalAlignment="Top"
-                        Margin="10">
+                        Margin="20 10">
                 <TextBlock HorizontalAlignment="Center" Text="Image Filters" />
                 <Separator />
                 <CheckBox HorizontalAlignment="Left" Content="Invert 1"
@@ -26,7 +27,10 @@
                         IsSnapToTickEnabled="True"
                         TickFrequency="2"
                         Value="{Binding BlurValue}"
-                        IsVisible="{Binding Blur}" />
+                        IsVisible="{Binding Blur}"
+                        ToolTip.Tip="{Binding BlurValue, StringFormat=Kernel Size: {0}}"
+                        ToolTip.IsOpen="{Binding $self.IsPointerOver}"
+                        ToolTip.ShowDelay="0" />
                 <CheckBox HorizontalAlignment="Left" Content="Erode"
                           IsChecked="{Binding Erode, Mode=TwoWay}" />
                 <Slider Minimum="1"
@@ -34,7 +38,10 @@
                         IsSnapToTickEnabled="True"
                         TickFrequency="1"
                         Value="{Binding ErodeValue}"
-                        IsVisible="{Binding Erode}" />
+                        IsVisible="{Binding Erode}"
+                        ToolTip.Tip="{Binding ErodeValue, StringFormat=Iterations: {0}}"
+                        ToolTip.IsOpen="{Binding $self.IsPointerOver}"
+                        ToolTip.ShowDelay="0" />
                 <CheckBox HorizontalAlignment="Left" Content="Dilate"
                           IsChecked="{Binding Dilate, Mode=TwoWay}" />
                 <Slider Minimum="1"
@@ -42,7 +49,10 @@
                         IsSnapToTickEnabled="True"
                         TickFrequency="1"
                         Value="{Binding DilateValue}"
-                        IsVisible="{Binding Dilate}" />
+                        IsVisible="{Binding Dilate}"
+                        ToolTip.Tip="{Binding DilateValue, StringFormat=Iterations: {0}}"
+                        ToolTip.IsOpen="{Binding $self.IsPointerOver}"
+                        ToolTip.ShowDelay="0" />
                 <CheckBox HorizontalAlignment="Left" Content="Canny Edge"
                           IsChecked="{Binding Canny, Mode=TwoWay}" />
                 <CheckBox HorizontalAlignment="Left" Content="Threshold"
@@ -50,14 +60,19 @@
                 <Slider Minimum="0"
                         Maximum="255"
                         Value="{Binding ThresholdValue}"
-                        IsVisible="{Binding Threshold}" />
+                        IsVisible="{Binding Threshold}"
+                        ToolTip.Tip="{Binding ThresholdValue, StringFormat=Threshold: {0}}"
+                        ToolTip.IsOpen="{Binding $self.IsPointerOver}"
+                        ToolTip.ShowDelay="0" />
             </StackPanel>
             <Image Grid.Column="1" Source="{Binding Image}" Stretch="Uniform" />
-            <sp:AvaPlot Grid.Column="2" x:Name="AvaPlot1"
-                        Width="200"
-                        Height="620"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Top" />
+        </Grid>
+        <Grid Row="1" Margin="20 0 20 10">
+            <sp:AvaPlot x:Name="AvaPlot1"
+                        Height="240"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        IsEnabled="False" />
 
         </Grid>
     </Grid>

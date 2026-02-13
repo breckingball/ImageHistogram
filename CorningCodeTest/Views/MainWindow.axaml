@@ -1,0 +1,66 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sp="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+        xmlns:vm="clr-namespace:CorningCodeTest.ViewModels"
+        x:Class="CorningCodeTest.Views.MainWindow"
+        Title="CorningCodeTest" Width="960" Height="640"
+        x:DataType="vm:MainViewModel">
+
+    <Grid Background="rgb(50,50,50)">
+        <Grid Margin="10 5" ColumnDefinitions="Auto,*,Auto" Background="rgb(15,15,35)">
+
+            <StackPanel Grid.Column="0" Width="150"
+                        Height="300"
+                        VerticalAlignment="Top"
+                        Margin="10">
+                <TextBlock HorizontalAlignment="Center" Text="Image Filters" />
+                <Separator />
+                <CheckBox HorizontalAlignment="Left" Content="Invert 1"
+                          IsChecked="{Binding Invert1, Mode=TwoWay}" />
+                <CheckBox HorizontalAlignment="Left" Content="Invert 2"
+                          IsChecked="{Binding Invert2, Mode=TwoWay}" />
+                <CheckBox HorizontalAlignment="Left" Content="Blur"
+                          IsChecked="{Binding Blur, Mode=TwoWay}" />
+                <Slider Minimum="1"
+                        Maximum="31"
+                        IsSnapToTickEnabled="True"
+                        TickFrequency="2"
+                        Value="{Binding BlurValue}"
+                        IsVisible="{Binding Blur}" />
+                <CheckBox HorizontalAlignment="Left" Content="Erode"
+                          IsChecked="{Binding Erode, Mode=TwoWay}" />
+                <Slider Minimum="1"
+                        Maximum="25"
+                        IsSnapToTickEnabled="True"
+                        TickFrequency="1"
+                        Value="{Binding ErodeValue}"
+                        IsVisible="{Binding Erode}" />
+                <CheckBox HorizontalAlignment="Left" Content="Dilate"
+                          IsChecked="{Binding Dilate, Mode=TwoWay}" />
+                <Slider Minimum="1"
+                        Maximum="25"
+                        IsSnapToTickEnabled="True"
+                        TickFrequency="1"
+                        Value="{Binding DilateValue}"
+                        IsVisible="{Binding Dilate}" />
+                <CheckBox HorizontalAlignment="Left" Content="Canny Edge"
+                          IsChecked="{Binding Canny, Mode=TwoWay}" />
+                <CheckBox HorizontalAlignment="Left" Content="Threshold"
+                          IsChecked="{Binding Threshold, Mode=TwoWay}" />
+                <Slider Minimum="0"
+                        Maximum="255"
+                        Value="{Binding ThresholdValue}"
+                        IsVisible="{Binding Threshold}" />
+            </StackPanel>
+            <Image Grid.Column="1" Source="{Binding Image}" Stretch="Uniform" />
+            <sp:AvaPlot Grid.Column="2" x:Name="AvaPlot1"
+                        Width="200"
+                        Height="620"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top" />
+
+        </Grid>
+    </Grid>
+
+
+</Window>

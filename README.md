@@ -83,4 +83,4 @@ Windows 11
 Ubuntu 24.04  
 Using xUnit
 
-![Example UI Window with Pikachu](example.png)
+![Example UI Window with Pikachu](ApplicationExample.png)

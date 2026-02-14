@@ -65,7 +65,16 @@
                         ToolTip.IsOpen="{Binding $self.IsPointerOver}"
                         ToolTip.ShowDelay="0" />
             </StackPanel>
-            <Image Grid.Column="1" Source="{Binding Image}" Stretch="Uniform" />
+            <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="Auto, *" RowSpacing="10">
+                <CheckBox Grid.Row="0" Content="Live Feed"
+                          HorizontalAlignment="Center"
+                          IsChecked="{Binding LiveFeed}" />
+                <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="20">
+                    <Image Grid.Column="0" Source="{Binding Image1}" Stretch="Uniform" />
+                    <Image Grid.Column="1" Source="{Binding Image2}" Stretch="Uniform" />
+                </Grid>
+            </Grid>
+
         </Grid>
         <Grid Row="1" Margin="20 0 20 10">
             <sp:AvaPlot x:Name="AvaPlot1"

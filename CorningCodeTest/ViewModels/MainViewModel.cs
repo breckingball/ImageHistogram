@@ -21,12 +21,14 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private int _erodeValue;
 
     private int[]? _histogramCounts = new int[256];
-    [ObservableProperty] private Bitmap? _image;
+    [ObservableProperty] private Bitmap? _image1, _image2;
     private ImageProcessing? _imageProcessing;
 
     [ObservableProperty] private bool _invert1;
 
     [ObservableProperty] private bool _invert2;
+
+    [ObservableProperty] private bool _liveFeed = true;
 
     [ObservableProperty] private bool _threshold;
     [ObservableProperty] private int _thresholdValue;
@@ -42,7 +44,8 @@ public partial class MainViewModel : ViewModelBase
         _imageProcessing.Start();
     }
 
-    public void GrayProcessFrame(Mat frame)
+
+    private void GrayProcessFrame(Mat frame)
     {
         if (_histogramCounts is null)
             return;
@@ -51,13 +54,21 @@ public partial class MainViewModel : ViewModelBase
         HistogramUpdated?.Invoke(_histogramCounts!);
     }
 
-    private void OnFrameReady(Mat frame)
+    private void OnFrameReady(bool live, Mat frame)
     {
         var bmp = _imageProcessing?.MatToAvaBitmap(frame);
         Dispatcher.UIThread.Post(() =>
         {
-            Image?.Dispose();
-            Image = bmp;
+            if (live)
+            {
+                Image1?.Dispose();
+                Image1 = bmp;
+            }
+            else
+            {
+                Image2?.Dispose();
+                Image2 = bmp;
+            }
         });
     }
 
@@ -140,5 +151,10 @@ public partial class MainViewModel : ViewModelBase
     partial void OnThresholdValueChanged(int value)
     {
         _imageProcessing?.ThresholdValue = value;
+    }
+
+    partial void OnLiveFeedChanged(bool value)
+    {
+        _imageProcessing?.cameraEnabled = value;
     }
 }

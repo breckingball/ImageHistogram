@@ -20,54 +20,81 @@ namespace CorningCodeTest.Services;
  */
 public class ImageProcessing
 {
-    private readonly VideoCapture _capture;
     private readonly DispatcherTimer? _timer;
-
+    private VideoCapture? _capture;
+    public bool cameraEnabled = true;
     public int DilateIterations = 1;
     public int ErodeIterations = 1;
     public int GuassianBlurSize = 1;
+    private Mat? lastMat = new();
     public int PostGrayFilters = 0;
     public int ThresholdValue = 0;
 
     public ImageProcessing()
     {
-        _capture = new VideoCapture();
-
-        if (!_capture.IsOpened)
-        {
-            Console.WriteLine("Camera failed to open");
-            return;
-        }
-
-        _capture.Set(CapProp.FrameWidth, 640);
-        _capture.Set(CapProp.FrameHeight, 480);
-
         _timer = new DispatcherTimer
         {
             Interval = TimeSpan.FromMilliseconds(33)
         };
 
         _timer.Tick += OnTick;
+
+        Start();
+        _timer.Start();
     }
+
 
     public void Start()
     {
-        _timer?.Start();
+        if (_capture != null) return;
+
+        _capture = new VideoCapture();
+
+        if (!_capture.IsOpened)
+        {
+            Console.WriteLine("Camera failed to open");
+            _capture.Dispose();
+            _capture = null;
+            return;
+        }
+
+        _capture.Set(CapProp.FrameWidth, 640);
+        _capture.Set(CapProp.FrameHeight, 480);
     }
+
 
     public event Action<Mat>? PreGrayImageFilters;
     public event Action<Mat>? PostGrayImageFilters;
     public event Action<Mat>? GrayProcess;
-    public event Action<Mat>? FrameReady;
+    public event Action<bool, Mat>? FrameReady;
 
     private void OnTick(object? sender, EventArgs e)
     {
-        using var frame = new Mat();
+        Mat frame;
+        if (cameraEnabled && _capture is not null)
+        {
+            frame = new Mat();
+            _capture.Read(frame);
+            if (frame.IsEmpty)
+            {
+                frame.Dispose();
+                return;
+            }
 
-        _capture.Read(frame);
-        if (frame.IsEmpty) return;
+            lastMat?.Dispose();
+            lastMat = frame.Clone();
 
-        PreGrayImageFilters?.Invoke(frame);
+            FrameReady?.Invoke(true, frame);
+        }
+        else
+        {
+            if (lastMat == null) return;
+            frame = lastMat.Clone();
+        }
+
+        {
+            PreGrayImageFilters?.Invoke(frame);
+        }
 
         using var nonGrayscale = frame.Clone();
 
@@ -75,7 +102,9 @@ public class ImageProcessing
 
         PostGrayImageFilters?.Invoke(frame);
 
-        FrameReady?.Invoke(PostGrayFilters > 0 ? frame : nonGrayscale);
+        FrameReady?.Invoke(false, PostGrayFilters > 0 ? frame : nonGrayscale);
+
+        frame.Dispose();
     }
 
     public Bitmap MatToAvaBitmap(Mat mat)

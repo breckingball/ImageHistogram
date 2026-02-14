@@ -80,4 +80,7 @@ EmguCV
 ScottPlot
 ### Tested On
 Windows 11
-Ubuntu 24.04
+Ubuntu 24.04  
+Using xUnit
+
+![Example UI Window with Pikachu](example.png)

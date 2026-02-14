@@ -1,11 +1,11 @@
 # Real Time Image Filtering with Histogram
 ## Setup
-### 1. Install .NET SDK
+### 1. Install .NET SDK 10.0+
 To check if .NET SDK is already installed, you can use
 ```
 dotnet --version
 ```
-If it does not exist on your system, go to https://dotnet.microsoft.com/download and follow the instructions
+If it does not exist on your system, or is outdated, go to https://dotnet.microsoft.com/download and follow the instructions to install the newest version
 ### 2. Clone GitHub Repository
 In your terminal, switch to the directory where the project will go, then run
 ```

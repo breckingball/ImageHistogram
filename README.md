@@ -69,3 +69,15 @@ CorningCodeTest/
 ## Samples 
 Sample Images can be found in the SampleOutputs directory  
 Contains the original photo, filtered image, and histogram for each filter
+## Development Environment
+### IDE  
+JetBrains Rider
+### SDK
+.NET SDK 10.0
+### Runtimes
+AvaloniaUI
+EmguCV
+ScottPlot
+### Tested On
+Windows 11
+Ubuntu 24.04

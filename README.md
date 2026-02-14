@@ -67,5 +67,5 @@ CorningCodeTest/
     └── Canny/
 ```
 ## Samples 
-Sample Images can be found in the SampleOutputs directory
+Sample Images can be found in the SampleOutputs directory  
 Contains the original photo, filtered image, and histogram for each filter

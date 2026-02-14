@@ -17,7 +17,7 @@ public partial class MainWindow : Window
         DataContext = new MainViewModel();
 
         Opened += MainWindow_Opened;
-
+        Closed += MainWindow_Closed;
         InitializePlot();
     }
 
@@ -65,5 +65,11 @@ public partial class MainWindow : Window
             vm.StartVideoFeed();
             vm.HistogramUpdated += UpdatePlot;
         }
+    }
+
+    private void MainWindow_Closed(object? sender, EventArgs eventArgs)
+    {
+        if (DataContext is MainViewModel vm)
+            vm.StopVideoFeed();
     }
 }

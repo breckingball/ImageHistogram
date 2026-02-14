@@ -44,6 +44,11 @@ public partial class MainViewModel : ViewModelBase
         _imageProcessing.Start();
     }
 
+    public void StopVideoFeed()
+    {
+        _imageProcessing?.Stop();
+    }
+
 
     private void GrayProcessFrame(Mat frame)
     {
@@ -155,6 +160,6 @@ public partial class MainViewModel : ViewModelBase
 
     partial void OnLiveFeedChanged(bool value)
     {
-        _imageProcessing?.cameraEnabled = value;
+        _imageProcessing?.CameraEnabled = value;
     }
 }

@@ -22,11 +22,11 @@ public class ImageProcessing
 {
     private readonly DispatcherTimer? _timer;
     private VideoCapture? _capture;
-    public bool cameraEnabled = true;
+    private Mat? _lastMat = new();
+    public bool CameraEnabled = true;
     public int DilateIterations = 1;
     public int ErodeIterations = 1;
     public int GuassianBlurSize = 1;
-    private Mat? lastMat = new();
     public int PostGrayFilters = 0;
     public int ThresholdValue = 0;
 
@@ -34,13 +34,10 @@ public class ImageProcessing
     {
         _timer = new DispatcherTimer
         {
-            Interval = TimeSpan.FromMilliseconds(33)
+            Interval = TimeSpan.FromMilliseconds(30)
         };
 
         _timer.Tick += OnTick;
-
-        Start();
-        _timer.Start();
     }
 
 
@@ -60,8 +57,16 @@ public class ImageProcessing
 
         _capture.Set(CapProp.FrameWidth, 640);
         _capture.Set(CapProp.FrameHeight, 480);
+
+        _timer?.Start();
     }
 
+    public void Stop()
+    {
+        _capture?.Dispose();
+        _lastMat?.Dispose();
+        _timer?.Stop();
+    }
 
     public event Action<Mat>? PreGrayImageFilters;
     public event Action<Mat>? PostGrayImageFilters;
@@ -71,7 +76,7 @@ public class ImageProcessing
     private void OnTick(object? sender, EventArgs e)
     {
         Mat frame;
-        if (cameraEnabled && _capture is not null)
+        if (CameraEnabled && _capture is not null)
         {
             frame = new Mat();
             _capture.Read(frame);
@@ -81,15 +86,15 @@ public class ImageProcessing
                 return;
             }
 
-            lastMat?.Dispose();
-            lastMat = frame.Clone();
+            _lastMat?.Dispose();
+            _lastMat = frame.Clone();
 
             FrameReady?.Invoke(true, frame);
         }
         else
         {
-            if (lastMat == null) return;
-            frame = lastMat.Clone();
+            if (_lastMat == null) return;
+            frame = _lastMat.Clone();
         }
 
         {
@@ -109,19 +114,17 @@ public class ImageProcessing
 
     public Bitmap MatToAvaBitmap(Mat mat)
     {
-        using var bgra = new Mat();
+        using var bmt = new Mat();
 
-        CvInvoke.CvtColor(mat, bgra, ColorConversion.Bgr2Bgra);
-
-        var stride = bgra.Step;
+        CvInvoke.CvtColor(mat, bmt, ColorConversion.Bgr2Bgra);
 
         return new Bitmap(
             PixelFormat.Bgra8888,
             AlphaFormat.Unpremul,
-            bgra.DataPointer,
-            new PixelSize(bgra.Width, bgra.Height),
+            bmt.DataPointer,
+            new PixelSize(bmt.Width, bmt.Height),
             new Vector(96, 96),
-            stride);
+            bmt.Step);
     }
 
     public void InvertBgr2Hsv(Mat mat)

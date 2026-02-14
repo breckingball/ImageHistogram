@@ -85,3 +85,16 @@ Using xUnit
 
 ## Example Application
 ![Example UI Window with Pikachu](ApplicationExample.png)
+
+## Decisions 
+### No Use of CUDA for EmguCV
+EmguCV allows the use of CUDA to do the computer vision algorithms, and it is much faster since that runs on the GPU. Instead of opting to use it, I stuck with just CPU processing to maintain portability to all platforms independent of whether there is a graphics card present or not.
+
+### MVVM Architecture
+I wanted to use a mature UI Framwork that is used in industry today
+
+### Image Processing as a Service 
+Instead of doing all the processing in the ViewModel, I decided to create Processing service where the filtering and Image functions would reside. This created cleaner code, which then I could reference the service from the ViewModel and keep the respective functions seperate.
+
+
+

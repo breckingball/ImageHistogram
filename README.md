@@ -90,8 +90,8 @@ Using xUnit
 ### No Use of CUDA for EmguCV
 EmguCV allows the use of CUDA to do the computer vision algorithms, and it is much faster since that runs on the GPU. Instead of opting to use it, I stuck with just CPU processing to maintain portability to all platforms independent of whether there is a graphics card present or not.
 
-### MVVM Architecture
-I wanted to use a mature UI Framwork that is used in industry today
+### MVVM Architecture with Avalonia
+I wanted to use a mature UI Framwork that is used in industry today, while being totally cross-platform. Avalonia provides this exactly, allowing for data binding which connects your XAML objects to variables in your code and updates them as they change, needing you to do nothing to handle updating. MVVM is for Model-View-ViewModel which seperates UI, Logic, and Assets for the program, making the code more maintainable and testable.
 
 ### Image Processing as a Service 
 Instead of doing all the processing in the ViewModel, I decided to create Processing service where the filtering and Image functions would reside. This created cleaner code, which then I could reference the service from the ViewModel and keep the respective functions seperate.

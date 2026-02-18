@@ -15,7 +15,7 @@ namespace CorningCodeTest.Services;
  * Provides ->
  *   Video Capture
  *   Image Filtering
- *      - Options: Invert1, Invert2, Blur, Erode, Dilate, Canny Edge
+ *      - Options: Invert1, Invert2, Blur, Erode, Dilate, Canny Edge, Threshold
  *   Conversion from Mat to Avalonia.Bitmap
  */
 public class ImageProcessing
@@ -73,6 +73,14 @@ public class ImageProcessing
     public event Action<Mat>? GrayProcess;
     public event Action<bool, Mat>? FrameReady;
 
+/* Every Tick, check if the camera is enabled
+ * if it is, capture the new frame and send it to the liveview feed
+ * if not, use the last available frame
+ * apply filters before grayscaling
+ * send the gray data to the histogram
+ * apply filters after grayscaling
+ * send filtered frame to the filtered feed
+ */
     private void OnTick(object? sender, EventArgs e)
     {
         Mat frame;
@@ -97,9 +105,7 @@ public class ImageProcessing
             frame = _lastMat.Clone();
         }
 
-        {
-            PreGrayImageFilters?.Invoke(frame);
-        }
+        PreGrayImageFilters?.Invoke(frame);
 
         using var nonGrayscale = frame.Clone();
 

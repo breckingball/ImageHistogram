@@ -7,6 +7,10 @@ using Emgu.CV;
 
 namespace CorningCodeTest.ViewModels;
 
+/* The Main View Model where the logic of the program takes place
+ * Referenced by the MainWindow allowing for binding to the properties
+ */
+
 public partial class MainViewModel : ViewModelBase
 {
     [ObservableProperty] private bool _blur;
@@ -59,6 +63,10 @@ public partial class MainViewModel : ViewModelBase
         HistogramUpdated?.Invoke(_histogramCounts!);
     }
 
+    /* Once a frame is ready for image conversion,
+     * convert to a bitmap to be displayed by the UI
+     * Calls the updating of the image on the UIThread so not to delay processing
+     */
     private void OnFrameReady(bool live, Mat frame)
     {
         var bmp = _imageProcessing?.MatToAvaBitmap(frame);
@@ -103,6 +111,10 @@ public partial class MainViewModel : ViewModelBase
         }
     }
 
+    /*
+     * On_____Changed functions are generated used by avalonia when binding values,
+     * everytime that value changes, the function is called and passed the value
+     */
     partial void OnInvert1Changed(bool value)
     {
         TogglePreGrayFilter(value, _imageProcessing!.InvertBgr2Hsv);

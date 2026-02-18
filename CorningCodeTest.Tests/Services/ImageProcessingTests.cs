@@ -8,6 +8,10 @@ namespace CorningCodeTest.Tests.Services;
 
 public class ImageProcessingTests
 {
+    /*
+     * Tests the "invert" from BGR to HSV
+     * checks that the output is not null and the number of channels are correct
+     */
     [Fact]
     public void InvertBgr2HsvTest()
     {
@@ -21,6 +25,10 @@ public class ImageProcessingTests
         Assert.Equal(3, mat.NumberOfChannels);
     }
 
+    /*
+     * Tests the grayscale function, filter only
+     * checks that the output is not null and the number of channels are correct
+     */
     [Fact]
     public void GrayScaleTest()
     {
@@ -34,6 +42,11 @@ public class ImageProcessingTests
         Assert.Equal(1, mat.NumberOfChannels);
     }
 
+    /*
+     * Tests the threshold function
+     * checks that the output is not null and the number of channels are correct
+     * and each byte is 255 since every pixel was above the threshold
+     */
     [Fact]
     public void ThresholdTest()
     {
@@ -49,6 +62,11 @@ public class ImageProcessingTests
         foreach (byte pixel in mat.GetData()) Assert.Equal(255, pixel);
     }
 
+    /*
+     * Tests the histogram data generation from grayscale
+     * checks that the output data is not null and that the collection
+     * has 256 buckets and there is 10000 points in the one bucket of [150]
+     */
     [Fact]
     public void HistogramTest()
     {

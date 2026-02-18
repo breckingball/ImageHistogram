@@ -7,6 +7,13 @@ using ScottPlot.Statistics;
 
 namespace CorningCodeTest.Views;
 
+/* Main Window which holds the UI Components
+ * references the View Model which allows for binding of values from
+ * the XAML file
+ * Contains the plot with the grayscale values
+ * Waits to render the Camera Feed until the UI is loaded,
+ * since that caused errors before
+ */
 public partial class MainWindow : Window
 {
     private BarPlot? _bars;
